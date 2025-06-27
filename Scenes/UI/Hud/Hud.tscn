@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://bargf8dyxl81y"]
+
+[ext_resource type="Script" uid="uid://0qguud524n8i" path="res://Scripts/hud.gd" id="1_ynf6e"]
+[ext_resource type="Texture2D" uid="uid://bb26jmg3j6g8u" path="res://Assets/Sprites/heart_full.png" id="2_p58to"]
+
+[node name="Hud" type="CanvasLayer"]
+script = ExtResource("1_ynf6e")
+
+[node name="HUD_Conteiner" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LivesContainer" type="HBoxContainer" parent="HUD_Conteiner"]
+layout_mode = 1
+offset_left = 31.0
+offset_top = 21.0
+offset_right = 71.0
+offset_bottom = 61.0
+
+[node name="Heart_1" type="TextureRect" parent="HUD_Conteiner/LivesContainer"]
+custom_minimum_size = Vector2(1, 0)
+layout_mode = 2
+texture = ExtResource("2_p58to")
+expand_mode = 3
+
+[node name="Heart_2" type="TextureRect" parent="HUD_Conteiner/LivesContainer"]
+layout_mode = 2
+texture = ExtResource("2_p58to")
+expand_mode = 3
+
+[node name="Heart_3" type="TextureRect" parent="HUD_Conteiner/LivesContainer"]
+layout_mode = 2
+texture = ExtResource("2_p58to")
+expand_mode = 3

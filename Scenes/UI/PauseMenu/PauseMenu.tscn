@@ -1,0 +1,144 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqf5tkt37qpoq"]
+
+[sub_resource type="GDScript" id="GDScript_52ti6"]
+script/source = "extends CanvasLayer
+
+@export var pause_menu_scene: PackedScene # Será a referência para o PauseMenu.tscn
+
+@onready var hud: CanvasLayer = $HUD # Referência ao seu nó HUD (certifique-se que $HUD é o caminho correto)
+
+signal resume_game
+signal restart_level
+signal exit_to_title
+
+func _on_ButtonResume_pressed():
+	emit_signal(\"resume_game\")
+	queue_free()
+
+func _on_ButtonRestart_pressed():
+	emit_signal(\"restart_level\")
+	queue_free()
+
+func _on_ButtonExit_pressed():
+	emit_signal(\"exit_to_title\")
+	queue_free()
+
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+	# Conecta os sinais do GameManager à HUD
+	if is_instance_valid(GameManager) and is_instance_valid(hud): # Verifica se eles existem antes de conectar
+		GameManager.lives_changed.connect(hud.update_lives)
+		GameManager.score_changed.connect(hud.update_score)
+
+		hud.update_lives(GameManager.current_lives)
+		hud.update_score(GameManager.current_score)
+	else:
+		print(\"AVISO: GameManager ou HUD não encontrados, verifique Autoload e instância da HUD.\")
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed(\"ui_cancel\"): # \"ui_cancel\" é geralmente a tecla ESC
+		_toggle_pause_menu()
+
+func _toggle_pause_menu() -> void:
+	if get_tree().paused: # Se o jogo já está pausado
+		_resume_game()
+	else: # Se o jogo não está pausado
+		_pause_game()
+
+func _pause_game() -> void:
+	get_tree().paused = true # Pausa o motor do jogo
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Mostra o mouse
+
+	# Instancia e adiciona o menu de pausa
+	var pause_menu_instance = pause_menu_scene.instantiate()
+	add_child(pause_menu_instance)
+
+	# Conecta os sinais EMITIDOS PELO MENU DE PAUSA (que ele acabou de instanciar)
+	# para as funções DESTE LevelManager (que ele RECEBE)
+	pause_menu_instance.resume_game.connect(_resume_game)
+	pause_menu_instance.restart_level.connect(_restart_level)
+	pause_menu_instance.exit_to_title.connect(_exit_to_title)
+	print(\"Jogo pausado. Menu de pausa instanciado.\") # <-- Debugging
+
+func _resume_game() -> void:
+	print(\"Retomando o jogo...\") # <-- Debugging
+	get_tree().paused = false # Despausa o motor do jogo
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Esconde o mouse novamente
+	# O pause_menu_instance vai chamar queue_free() em si mesmo quando seus botões são pressionados.
+
+func _restart_level() -> void:
+	print(\"Reiniciando nível...\") # <-- Debugging
+	get_tree().paused = false # Despausa antes de recarregar
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Esconde o mouse
+	get_tree().reload_current_scene()
+
+func _exit_to_title() -> void:
+	print(\"Saindo para o título...\") # <-- Debugging
+	get_tree().paused = false # Despausa antes de sair
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Mostra o mouse para o menu de título
+	get_tree().change_scene_to_file(\"res://Scenes/TitleScreen.tscn\")
+
+
+func _on_Button_pressed() -> void:
+	pass # Replace with function body.
+"
+
+[node name="PauseMenu" type="CanvasLayer"]
+script = SubResource("GDScript_52ti6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.501961)
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.0
+offset_top = -93.0
+offset_right = 133.0
+offset_bottom = 107.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 29.0
+offset_right = 2.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Button01" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "RESUMIR"
+
+[node name="Button02" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "REINICIAR FASE"
+
+[node name="Button03" type="Button" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "SAIR PARA O TÍTULO"
+
+[connection signal="pressed" from="Panel/VBoxContainer/Button01" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Button02" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Button03" to="." method="_on_Button_pressed"]
