@@ -1,4 +1,4 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqf5tkt37qpoq"]
+[gd_scene load_steps=2 format=3 uid="uid://cxxdi67w7yu6x"]
 
 [sub_resource type="GDScript" id="GDScript_52ti6"]
 script/source = "extends CanvasLayer
@@ -82,18 +82,6 @@ func _exit_to_title() -> void:
 
 func _on_Button_pressed() -> void:
 	pass # Replace with function body.
-
-
-func _on_resume_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_restart_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_exit_pressed() -> void:
-	pass # Replace with function body.
 "
 
 [node name="PauseMenu" type="CanvasLayer"]
@@ -133,24 +121,24 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
-[node name="resume" type="Button" parent="Panel/VBoxContainer"]
+[node name="Button01" type="Button" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "RESUME"
+text = "RESUMIR"
 
-[node name="restart" type="Button" parent="Panel/VBoxContainer"]
+[node name="Button02" type="Button" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "RESTART"
+text = "REINICIAR FASE"
 
-[node name="exit" type="Button" parent="Panel/VBoxContainer"]
+[node name="Button03" type="Button" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "EXIT"
+text = "SAIR PARA O TÍTULO"
 
-[connection signal="pressed" from="Panel/VBoxContainer/resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/restart" to="." method="_on_restart_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Button01" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Button02" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Button03" to="." method="_on_Button_pressed"]

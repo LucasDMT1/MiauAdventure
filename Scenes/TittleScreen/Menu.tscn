@@ -1,0 +1,47 @@
+[gd_scene load_steps=5 format=3 uid="uid://f4n1ntbbcijt"]
+
+[ext_resource type="Script" path="res://Scripts/menu.gd" id="1_4u1vh"]
+[ext_resource type="FontFile" uid="uid://don43uto4t0b6" path="res://Assets/Font/Pixelmania.ttf" id="2_xcuae"]
+
+[sub_resource type="FontVariation" id="FontVariation_oj12c"]
+base_font = ExtResource("2_xcuae")
+
+[sub_resource type="FontVariation" id="FontVariation_fsyx1"]
+base_font = ExtResource("2_xcuae")
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4u1vh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -123.0
+offset_top = -74.0
+offset_right = 129.0
+offset_bottom = 93.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_oj12c")
+text = "START"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontVariation_fsyx1")
+text = "QUIT
+"
+
+[connection signal="pressed" from="VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

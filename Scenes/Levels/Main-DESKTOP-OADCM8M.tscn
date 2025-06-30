@@ -1,9 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://jvnec6mtq224"]
+[gd_scene load_steps=11 format=3 uid="uid://dkhj4x30ivk53"]
 
 [ext_resource type="Script" uid="uid://bgl10qf2bdah6" path="res://Scripts/level_manager.gd" id="1_d31q8"]
 [ext_resource type="Texture2D" uid="uid://ceidp572t7vku" path="res://Assets/TileSets/Assets.png" id="2_d31q8"]
 [ext_resource type="PackedScene" uid="uid://cqf5tkt37qpoq" path="res://Scenes/UI/PauseMenu/PauseMenu.tscn" id="2_dmpbk"]
-[ext_resource type="Texture2D" uid="uid://c1fuxvjsc8r8l" path="res://Scenes/background/Background_1.png" id="4_oi5um"]
 [ext_resource type="Script" uid="uid://dgii1x2ssd2lh" path="res://Scripts/exit_zone.gd" id="4_r66ge"]
 [ext_resource type="PackedScene" uid="uid://bjw40qeyi7sfe" path="res://Scenes/Player/CatPlayer.tscn" id="7_oi5um"]
 [ext_resource type="PackedScene" uid="uid://bargf8dyxl81y" path="res://Scenes/UI/Hud/Hud.tscn" id="7_r66ge"]
@@ -539,17 +538,6 @@ size = Vector2(59, 62)
 script = ExtResource("1_d31q8")
 pause_menu_scene = ExtResource("2_dmpbk")
 
-[node name="CatPlayer" parent="." instance=ExtResource("7_oi5um")]
-position = Vector2(130, -105)
-
-[node name="Camera2D" type="Camera2D" parent="CatPlayer"]
-zoom = Vector2(1.5, 1.5)
-limit_left = 0
-limit_top = -432
-limit_right = 1136
-limit_bottom = 0
-editor_draw_limits = true
-
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 offset = Vector2(0, -321)
 transform = Transform2D(1, 0, 0, 1, 0, -321)
@@ -558,28 +546,15 @@ transform = Transform2D(1, 0, 0, 1, 0, -321)
 motion_mirroring = Vector2(992, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/BackGroundParallaxLayer"]
-position = Vector2(0, -114)
-scale = Vector2(1, 1.41912)
 texture = ExtResource("7_saai4")
 centered = false
 
 [node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/BackGroundParallaxLayer"]
-position = Vector2(496, -111)
-scale = Vector2(1, 1.40809)
+position = Vector2(496, 0)
 texture = ExtResource("7_saai4")
 centered = false
 
-[node name="MiddleGroundParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2(992, 0)
-
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground/MiddleGroundParallaxLayer"]
-texture = ExtResource("4_oi5um")
-centered = false
-
-[node name="Sprite2D2" type="Sprite2D" parent="ParallaxBackground/MiddleGroundParallaxLayer"]
-position = Vector2(496, 0)
-texture = ExtResource("4_oi5um")
-centered = false
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_pbw6q")
@@ -596,5 +571,8 @@ shape = SubResource("RectangleShape2D_oi5um")
 debug_color = Color(0.218881, 0.950133, 0.107332, 1)
 
 [node name="Hud" parent="." instance=ExtResource("7_r66ge")]
+
+[node name="Player" parent="." instance=ExtResource("7_oi5um")]
+position = Vector2(75, -87)
 
 [connection signal="body_entered" from="ExitZone" to="ExitZone" method="_on_body_entered"]
