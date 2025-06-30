@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7edu25d3wmym"
-path="res://.godot/imported/background.png-990efde869bee8cc6c0e11af591034f5.ctex"
+uid="uid://6u3fo4k1w8au"
+path="res://.godot/imported/Starry_night_Layer_5.png-e2b7431005a4dfa7b4ed88140531b660.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/background/background.png"
-dest_files=["res://.godot/imported/background.png-990efde869bee8cc6c0e11af591034f5.ctex"]
+source_file="res://Scenes/background/Starry_night_Layer_5.png"
+dest_files=["res://.godot/imported/Starry_night_Layer_5.png-e2b7431005a4dfa7b4ed88140531b660.ctex"]
 
 [params]
 
