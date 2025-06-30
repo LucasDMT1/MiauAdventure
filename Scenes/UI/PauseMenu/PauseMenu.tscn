@@ -1,105 +1,49 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqf5tkt37qpoq"]
+[gd_scene load_steps=7 format=3 uid="uid://cqf5tkt37qpoq"]
+
+[ext_resource type="FontFile" uid="uid://don43uto4t0b6" path="res://Assets/Font/Pixelmania.ttf" id="1_e4e6r"]
 
 [sub_resource type="GDScript" id="GDScript_52ti6"]
 script/source = "extends CanvasLayer
 
-@export var pause_menu_scene: PackedScene # Será a referência para o PauseMenu.tscn
+func resume():
+	get_tree().paused = false
 
-@onready var hud: CanvasLayer = $HUD # Referência ao seu nó HUD (certifique-se que $HUD é o caminho correto)
+func pause():
+	get_tree().paused = true 
+	
+func testEsc():
+	if Input.is_action_just_pressed(\"esc\") and !get_tree().paused:
+		pause()
+	elif Input.is_action_just_pressed(\"esc\") and get_tree().paused:
+		resume()
 
-signal resume_game
-signal restart_level
-signal exit_to_title
+func _on_resume_pressed():
+	resume()
 
-func _on_ButtonResume_pressed():
-	emit_signal(\"resume_game\")
-	queue_free()
-
-func _on_ButtonRestart_pressed():
-	emit_signal(\"restart_level\")
-	queue_free()
-
-func _on_ButtonExit_pressed():
-	emit_signal(\"exit_to_title\")
-	queue_free()
-
-func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
-	# Conecta os sinais do GameManager à HUD
-	if is_instance_valid(GameManager) and is_instance_valid(hud): # Verifica se eles existem antes de conectar
-		GameManager.lives_changed.connect(hud.update_lives)
-		GameManager.score_changed.connect(hud.update_score)
-
-		hud.update_lives(GameManager.current_lives)
-		hud.update_score(GameManager.current_score)
-	else:
-		print(\"AVISO: GameManager ou HUD não encontrados, verifique Autoload e instância da HUD.\")
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed(\"ui_cancel\"): # \"ui_cancel\" é geralmente a tecla ESC
-		_toggle_pause_menu()
-
-func _toggle_pause_menu() -> void:
-	if get_tree().paused: # Se o jogo já está pausado
-		_resume_game()
-	else: # Se o jogo não está pausado
-		_pause_game()
-
-func _pause_game() -> void:
-	get_tree().paused = true # Pausa o motor do jogo
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Mostra o mouse
-
-	# Instancia e adiciona o menu de pausa
-	var pause_menu_instance = pause_menu_scene.instantiate()
-	add_child(pause_menu_instance)
-
-	# Conecta os sinais EMITIDOS PELO MENU DE PAUSA (que ele acabou de instanciar)
-	# para as funções DESTE LevelManager (que ele RECEBE)
-	pause_menu_instance.resume_game.connect(_resume_game)
-	pause_menu_instance.restart_level.connect(_restart_level)
-	pause_menu_instance.exit_to_title.connect(_exit_to_title)
-	print(\"Jogo pausado. Menu de pausa instanciado.\") # <-- Debugging
-
-func _resume_game() -> void:
-	print(\"Retomando o jogo...\") # <-- Debugging
-	get_tree().paused = false # Despausa o motor do jogo
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Esconde o mouse novamente
-	# O pause_menu_instance vai chamar queue_free() em si mesmo quando seus botões são pressionados.
-
-func _restart_level() -> void:
-	print(\"Reiniciando nível...\") # <-- Debugging
-	get_tree().paused = false # Despausa antes de recarregar
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Esconde o mouse
+func _on_restart_pressed():
 	get_tree().reload_current_scene()
 
-func _exit_to_title() -> void:
-	print(\"Saindo para o título...\") # <-- Debugging
-	get_tree().paused = false # Despausa antes de sair
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Mostra o mouse para o menu de título
-	get_tree().change_scene_to_file(\"res://Scenes/TitleScreen.tscn\")
-
-
-func _on_Button_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_resume_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_restart_pressed() -> void:
-	pass # Replace with function body.
-
-
-func _on_exit_pressed() -> void:
-	pass # Replace with function body.
+func _on_exit_pressed():
+	get_tree().quit()
 "
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e4e6r"]
+
+[sub_resource type="FontVariation" id="FontVariation_psikb"]
+base_font = ExtResource("1_e4e6r")
+
+[sub_resource type="FontVariation" id="FontVariation_7g5nr"]
+base_font = ExtResource("1_e4e6r")
+
+[sub_resource type="FontVariation" id="FontVariation_0nva5"]
+base_font = ExtResource("1_e4e6r")
+
 [node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
 script = SubResource("GDScript_52ti6")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_e4e6r")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -137,18 +81,21 @@ theme_override_constants/separation = 10
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = SubResource("FontVariation_psikb")
 text = "RESUME"
 
 [node name="restart" type="Button" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = SubResource("FontVariation_7g5nr")
 text = "RESTART"
 
 [node name="exit" type="Button" parent="Panel/VBoxContainer"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = SubResource("FontVariation_0nva5")
 text = "EXIT"
 
 [connection signal="pressed" from="Panel/VBoxContainer/resume" to="." method="_on_resume_pressed"]

@@ -24,11 +24,6 @@ func _pause_game() -> void:
 	var pause_menu_instance = pause_menu_scene.instantiate()
 	add_child(pause_menu_instance)
 
-	# Conecta os sinais do menu de pausa
-	pause_menu_instance.resume_game.connect(_resume_game)
-	pause_menu_instance.restart_level.connect(_restart_level)
-	pause_menu_instance.exit_to_title.connect(_exit_to_title)
-
 func _resume_game() -> void:
 	get_tree().paused = false # Despausa o motor do jogo
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Esconde o mouse novamente
