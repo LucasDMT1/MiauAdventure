@@ -621,7 +621,7 @@ offset = Vector2(0, -650)
 transform = Transform2D(1, 0, 0, 1, 0, -650)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(-57, -1)
+position = Vector2(1102, -135)
 sprite_frames = SubResource("SpriteFrames_7gkq1")
 animation = &"Portal"
 frame_progress = 0.392358
