@@ -621,9 +621,11 @@ offset = Vector2(0, -650)
 transform = Transform2D(1, 0, 0, 1, 0, -650)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(1102, -135)
+position = Vector2(1092, -81)
+scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_7gkq1")
 animation = &"Portal"
+autoplay = "Portal"
 frame_progress = 0.392358
 
 [connection signal="body_entered" from="ExitZone" to="ExitZone" method="_on_body_entered"]
